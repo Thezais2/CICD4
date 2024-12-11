@@ -11,25 +11,18 @@ module "vpc" {
   sgcidr = "0.0.0.0/0"
 }
 
-module "iam" {
-  source = "./modules/iam"
-
-  eksclusterrolename = "tfeksclusterrole"
-  eksnodegrouprolename = "tfeksnodegrouprolename"
-}
-
 module "eks" {
   source = "./modules/eks"
 
   eksclustername       = "tfekscluster"
   eksnodegroupname     = "tfnodegroup"
+  eksclusterrolename   = "tfeksclusterrole"
+  eksnodegrouprolename = "tfeksnodegrouprole"
   subnet1id            = module.vpc.subnet1id
   subnet2id            = module.vpc.subnet2id
   aws_eks_role         = module.iam.aws_eks_role
-  aws_eksnodegrouprole = module.iam.aws_eksnodegrouprole
 
   depends_on = [
-    module.iam,
-    module.vpc
+  module.vpc
   ]
 }

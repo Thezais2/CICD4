@@ -80,12 +80,12 @@ resource "aws_eks_cluster" "tfekscluster" {
     max_size     = 3
     min_size     = 1
   }
-}
 
-# Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
+  # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
   depends_on = [
     aws_iam_role_policy_attachment.tfpolicyattach2,
     aws_iam_role_policy_attachment.tfpolicyattach3,
     aws_iam_role_policy_attachment.tfpolicyattach4,
   ]
+}
