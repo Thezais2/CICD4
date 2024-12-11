@@ -21,4 +21,8 @@ module "eks" {
   subnet1id            = module.vpc.subnet1id
   subnet2id            = module.vpc.subnet2id
   aws_eks_role         = module.iam.aws_eks_role
+
+  depends_on = [
+  module.vpc
+  ]
 }
