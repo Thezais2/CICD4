@@ -1,54 +1,59 @@
-// CREATE VPC
 resource "aws_vpc" "tf_vpc" {
   cidr_block           = var.vpccidr
-  enable_dns_support   = true
   enable_dns_hostnames = true
+  enable_dns_support   = true
   tags = {
     Name = var.vpcname
   }
 }
-//CREATE 2 PUBLIC SUBNETS
-resource "aws_subnet" "tf_public_subnet1" {
+
+resource "aws_subnet" "tf_subnet1" {
   vpc_id                  = aws_vpc.tf_vpc.id
   cidr_block              = var.subnet1cidr
   availability_zone       = var.subnet1az
   map_public_ip_on_launch = true
   tags = {
-    Name = var.subnet1cidr
+    Name = "tf_subnet_test1"
   }
 }
-resource "aws_subnet" "tf_public_subnet2" {
+
+resource "aws_subnet" "tf_subnet2" {
   vpc_id                  = aws_vpc.tf_vpc.id
   cidr_block              = var.subnet2cidr
   availability_zone       = var.subnet2az
   map_public_ip_on_launch = true
   tags = {
-    Name = var.subnet2cidr
-  }
-}
-// Create IGW
-resource "aws_internet_gateway" "igw1" {
-  vpc_id = aws_vpc.vpc1.id
-  tags = {
-    Name = "terraigw"
+    Name = "tf_subnet_test2"
   }
 }
 
-// Create Route Table 
-resource "aws_route_table" "route1" {
-  vpc_id = aws_vpc.vpc1.id
+resource "aws_internet_gateway" "tf_igw" {
+  vpc_id = aws_vpc.tf_vpc.id
+  tags = {
+    Name = "tf_igw_test"
+  }
+
+}
+
+resource "aws_route_table" "tf_rt" {
+  vpc_id = aws_vpc.tf_vpc.id
 
   route {
-    cidr_block = "0.0.0.0/24"
-    gateway_id = aws_internet_gateway.igw1.id
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.tf_igw.id
   }
+
   tags = {
-    Name = "routetable1"
+    Name = "tf_rt_test"
   }
 }
 
-// Subnet Associations For Route Table
-resource "aws_route_table_association" "routeass1" {
-  subnet_id      = aws_subnet.publicsub1.id
-  route_table_id = aws_route_table.route1.id
+resource "aws_route_table_association" "a" {
+  subnet_id      = aws_subnet.tf_subnet1.id
+  route_table_id = aws_route_table.tf_rt.id
+}
+
+resource "aws_route_table_association" "b" {
+  subnet_id      = aws_subnet.tf_subnet2.id
+  route_table_id = aws_route_table.tf_rt.id
 }

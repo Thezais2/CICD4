@@ -3,32 +3,27 @@ variable "eksclustername" {
   type = string
 }
 
-variable "eksclusterrolename" {
-  description = "EKS Cluster Role name"
-  type = string
-}
-
 variable "aws_eks_role" {
   description = "EKS Role ARN"
   type = string
 }
 
 variable "subnet1id" {
-  description = "Name of the 1st Subnet"
+  description = "Subnet 1 ID"
   type = string
 }
 
 variable "subnet2id" {
-  description = "Name of the 2nd Subnet"
+  description = "Subnet 2 ID"
   type = string
 }
 
 variable "eksnodegroupname" {
-  description = "EKS Node Group Name"
+  description = "EKS node group name"
   type = string
 }
 
-variable "eksnodegrouprolename" {
+variable "aws_eksnodegrouprole" {
   description = "AWS EKS group role"
   type = string
 }
